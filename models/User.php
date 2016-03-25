@@ -16,7 +16,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function tableName ()
     {
-        return 'evrnt_user';
+        return 'table_user';
     }
     /**
      * @inheritdoc

@@ -37,7 +37,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
             </div>
         </div>
-
+    <div class="form-group">
+                   <div class="col-lg-offset-1 col-lg-11">
+                           <a href="/user/create" class="btn btn-primary">Sign up</a>
+                        </div>
+                </div>
     <?php ActiveForm::end(); ?>
 
     <div class="col-lg-offset-1" style="color:#999;">
