@@ -31,10 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'create_date',
                 'value' => 'create_date',
-            //    'filter' => \yii\jui\DatePicker::widget([
-             //       'language' => 'ru',
-             //       'dateFormat' => 'dd-MM-yyyy'
-             //   ]),
+                'filter' => \yii\jui\DatePicker::widget([
+                    'language' => 'ru',
+                    'dateFormat' => 'dd-MM-yyyy'
+                ]),
                 'format' => 'html'
             ],
             ['class' => 'yii\grid\ActionColumn'],
