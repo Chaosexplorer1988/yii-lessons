@@ -8,6 +8,7 @@ use app\models\search\SearchCalendar;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii2fullcalendar\models\Event;
 
 /**
  * CalendarController implements the CRUD actions for Calendar model.
@@ -37,10 +38,28 @@ class CalendarController extends Controller
     {
         $searchModel = new SearchCalendar();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $e = Calendar::find()->all();
+        foreach ($e as $eve)
+        {
+            $event = new \yii2fullcalendar\models\Event();
+            $event->id = $eve->id;
+            $event->title = $eve->text;
+            $event->start = $eve->date_event;
+            $event->backgroundColor = 'red';
+            $events[] = $event;
+        }
 
+        if(!$e){
+            $Event = new \yii2fullcalendar\models\Event();
+            $Event->id = 1;
+            $Event->title = 'Сегодня';
+            $Event->start = date('Y-m-d\TH:i:s\Z');
+            $events[] = $Event;
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'events' => $events
         ]);
     }
 

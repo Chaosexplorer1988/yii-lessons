@@ -25,4 +25,5 @@ composer.phar
 phpunit.phar
 # local phpunit config
 /phpunit.xml
+# log dir
 /log
