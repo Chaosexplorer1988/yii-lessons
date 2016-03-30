@@ -15,15 +15,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Создать календарь'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php
+        \yii\bootstrap\Modal::begin([
+            'header' =>'<h4>Календарь</h4>',
+            'id' => 'modal',
+            'size' => 'modal-lg'
+        ]);
+    echo "<div id='modalContent'></div>";
+        \yii\bootstrap\Modal::end();
+    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'id',
+            //['class' => 'yii\grid\SerialColumn'],
+            //'id',
             'creator',
             'text',
             //'date_event',
@@ -35,13 +41,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'date_event',
                 'filter' => \yii\jui\DatePicker::widget([
                     'language' => 'ru',
-                    'dateFormat' => 'dd-MM-yyyy'
+                    'dateFormat' => 'yyyy-MM-dd'
                 ]),
                 'format' => 'html'
             ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+    <h2>Для добавления события, счелкните по нужной вам дате</h2>
+
 <?= \yii2fullcalendar\yii2fullcalendar::widget(array(
     'googleCalendar' => true,
     'options' => [
