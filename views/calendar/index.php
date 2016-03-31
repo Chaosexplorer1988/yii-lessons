@@ -25,6 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         \yii\bootstrap\Modal::end();
     ?>
     <?= GridView::widget([
+        //'showOnEmpty' => false,
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -40,6 +41,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'date_event',
                 'value' => 'date_event',
                 'filter' => \yii\jui\DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'date_event',
                     'language' => 'ru',
                     'dateFormat' => 'yyyy-MM-dd'
                 ]),
