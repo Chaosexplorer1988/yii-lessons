@@ -28,10 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
         //'showOnEmpty' => false,
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'summary' => false,
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
             //'id',
-            'creator',
+            [
+                'attribute' =>'creator',
+                'value' =>'userCreator.username'
+            ],
+
             'text',
             //'date_event',
             // 'password',

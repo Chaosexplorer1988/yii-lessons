@@ -18,8 +18,8 @@ class SearchCalendar extends Calendar
     public function rules()
     {
         return [
-            [['id', 'creator'], 'integer'],
-            [['text', 'date_event'], 'safe'],
+            [['id'], 'integer'],
+            [['text', 'creator', 'date_event'], 'safe'],
         ];
     }
 
@@ -56,15 +56,15 @@ class SearchCalendar extends Calendar
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        $query->joinWith('userCreator');
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'creator' => $this->creator,
             'date_event' => $this->date_event,
         ]);
 
-        $query->andFilterWhere(['like', 'text', $this->text]);
+        $query->andFilterWhere(['like', 'text', $this->text])
+              ->andFilterWhere(['like', 'table_user.username', $this->creator]);
 
         return $dataProvider;
     }

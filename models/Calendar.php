@@ -68,7 +68,10 @@ class Calendar extends \yii\db\ActiveRecord
             'date_event' => Yii::t('app', 'Date Event'),
         ];
     }
-
+    public function getUserCreator()
+    {
+        return $this->hasOne(User::className(), ['id' => 'creator']);
+    }
     /**
      * @inheritdoc
      * @return \app\models\query\ClndrCalendarQuery the active query used by this AR class.
