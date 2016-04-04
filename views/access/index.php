@@ -22,14 +22,26 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+          //  ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'user_owner',
-            'user_guest',
-            'date',
-
+				[
+					'attribute' => 'user_guest',
+					'value'     => 'userGuest.username'
+				],
+            [
+                'attribute' => 'date',
+                'value'     => 'date',
+                'filter' => \yii\jui\DatePicker::widget([
+                   // 'model' => $searchModel,
+                  //  'attribute' => 'date_event',
+                    'language' => 'ru',
+                    'dateFormat' => 'yyyy-MM-dd'
+                ]),
+                'format'    => 'html'
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+        ]
+    ); ?>
 </div>

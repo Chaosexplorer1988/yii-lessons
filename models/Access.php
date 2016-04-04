@@ -17,6 +17,8 @@ use Yii;
  */
 class Access extends \yii\db\ActiveRecord
 {
+    const ACCESS_CREATOR = 1;
+    const ACCESS_GUEST = 2;
     /**
      * @inheritdoc
      */
@@ -31,7 +33,7 @@ class Access extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_owner', 'user_guest', 'date'], 'required'],
+            [['user_guest', 'date'], 'required'],
             [['user_owner', 'user_guest'], 'integer'],
             [['date'], 'safe'],
             [['user_owner'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_owner' => 'id']],
@@ -52,21 +54,46 @@ class Access extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function checkAccess($model)
+    {
+        if ($model->creator==Yii::$app->user->id) {
+            return self::ACCESS_CREATOR;
+        }
+        $accessNote = self::find()
+            ->withGuest($model->id)
+            ->withDate(date('Y-m-d'))
+            ->exists();
+        if ($accessNote) {
+            return self::ACCESS_GUEST;
+        }
+        return false;
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->getIsNewRecord()) {
+                $this->user_owner = Yii::$app->user->id;
+            }
+            $this->date = date('Y-m-d');
+        }
+        return true;
+    }
     /**
      * @return \yii\db\ActiveQuery
      */
-   // public function getUserOwner()
-   // {
-    //    return $this->hasOne(User::className(), ['id' => 'user_owner']);
-   // }
+    public function getUserOwner()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_owner']);
+    }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-   // public function getUserGuest()
-   // {
-    //    return $this->hasOne(User::className(), ['id' => 'user_guest']);
-    //}
+    public function getUserGuest()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_guest']);
+    }
 
     /**
      * @inheritdoc

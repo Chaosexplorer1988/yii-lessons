@@ -13,7 +13,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="calendar-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?php if (!Yii::$app->user->isGuest) { ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?= Html::a(Yii::t('app', 'My Accesses'), ['/access'], ['class' => 'btn btn-success']) ?>
+    <?= Html::a(Yii::t('app', 'Calendars of my friend'), ['/calendar/friendcalendars?id='.Yii::$app->user->id], ['class' => 'btn btn-success']) ?>
 
     <?php
         \yii\bootstrap\Modal::begin([
@@ -24,8 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
     echo "<div id='modalContent'></div>";
         \yii\bootstrap\Modal::end();
     ?>
+
+
+
     <?= GridView::widget([
-        //'showOnEmpty' => false,
+        'showOnEmpty' => false,
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'summary' => false,
@@ -57,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     <h2>Для добавления события, счелкните по нужной вам дате</h2>
-
+   <?php } ?>
 <?= \yii2fullcalendar\yii2fullcalendar::widget(array(
     'googleCalendar' => true,
     'options' => [

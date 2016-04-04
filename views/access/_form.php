@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Access */
 /* @var $form yii\widgets\ActiveForm */
@@ -12,11 +13,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'user_owner')->textInput() ?>
-
     <?= $form->field($model, 'user_guest')->textInput() ?>
 
-    <?= $form->field($model, 'date')->textInput() ?>
+    <?= $form->field($model, 'date')->widget(\yii\jui\DatePicker::className(),['language'=>'ru','options' => ['dateFormat'=>'yyyy-mm-dd']]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

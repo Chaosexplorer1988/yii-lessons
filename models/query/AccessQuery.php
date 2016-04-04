@@ -15,6 +15,34 @@ class AccessQuery extends \yii\db\ActiveQuery
     }*/
 
     /**
+     * Condition with user_guest
+     * @param $user_guest
+     * @return $this
+     */
+    public function withGuest($user_guest)
+    {
+        return $this->andWhere(
+            'user_guest = :user_guest',
+            [
+                ":user_guest" => $user_guest
+            ]
+        );
+    }
+    /**
+     * Condition with date
+     * @param $date
+     * @return $this
+     */
+    public function withDate($date)
+    {
+        return $this->andWhere(
+            'date = :date',
+            [
+                ":date" => substr($date,0,10)
+            ]
+        );
+    }
+    /**
      * @inheritdoc
      * @return \app\models\Access[]|array
      */
@@ -22,7 +50,6 @@ class AccessQuery extends \yii\db\ActiveQuery
     {
         return parent::all($db);
     }
-
     /**
      * @inheritdoc
      * @return \app\models\Access|array|null

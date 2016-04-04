@@ -72,6 +72,11 @@ class Calendar extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'creator']);
     }
+
+    public function getAccess()
+    {
+        return $this->hasMany(Access::className(), ['date' => 'date_event']);
+    }
     /**
      * @inheritdoc
      * @return \app\models\query\ClndrCalendarQuery the active query used by this AR class.

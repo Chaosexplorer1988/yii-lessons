@@ -48,7 +48,11 @@ class SearchCalendar extends Calendar
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
+        $query->joinWith(['access']);
+        $dataProvider->sort->attributes['access'] = [
+            'asc' => ['table_access.user_owner' => SORT_ASC],
+            'desc' => ['table_access.user_owner' => SORT_DESC],
+        ];
         $this->load($params);
 
         if (!$this->validate()) {
@@ -61,10 +65,11 @@ class SearchCalendar extends Calendar
         $query->andFilterWhere([
             'id' => $this->id,
             'date_event' => $this->date_event,
+           // 'table_access.user_owner' => $this->access['user_owner']
         ]);
 
         $query->andFilterWhere(['like', 'text', $this->text])
-              ->andFilterWhere(['like', 'table_user.username', $this->creator]);
+              ->andFilterWhere(['like', 'creator', $this->creator]);
 
         return $dataProvider;
     }

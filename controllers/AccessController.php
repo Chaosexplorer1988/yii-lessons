@@ -36,7 +36,15 @@ class AccessController extends Controller
     public function actionIndex()
     {
         $searchModel = new SearchAccess();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(
+            [
+                'SearchAccess' => array_merge(
+                    [
+                        'user_owner' => Yii::$app->user->id
+                    ], Yii::$app->request->queryParams
+                )
+            ]
+        );
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -44,6 +52,28 @@ class AccessController extends Controller
         ]);
     }
 
+    public function actionFriendaccess()
+    {
+        $searchModel  = new SearchAccess();
+        $dataProvider = $searchModel->search(
+            [
+                'SearchAccess' => array_merge(
+                    [
+                        'user_guest' => Yii::$app->user->id,
+             //           'date'       => date('Y-m-d')
+                    ],
+            Yii::$app->request->queryParams
+                )
+            ]
+        );
+
+        return $this->render(
+            'friendAccess', [
+                'searchModel'  => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]
+        );
+    }
     /**
      * Displays a single Access model.
      * @param integer $id
