@@ -26,10 +26,10 @@ class CalendarController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['mynotes', 'create', 'update', 'delete'],
+                'only' => ['create', 'update', 'delete'],
                 'rules' => [
                     [
-                        'actions' => ['mynotes', 'create', 'update', 'delete'],
+                        'actions' => ['create', 'update', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -56,8 +56,8 @@ class CalendarController extends Controller
         $searchModel = new SearchCalendar();
         $dataProvider = $searchModel->search(
             [
-                'SearchCalendar' =>
-                  ['creator' => Yii::$app->user->id]
+
+                     Yii::$app->request->queryParams
 
             ]
         );
@@ -106,14 +106,15 @@ class CalendarController extends Controller
 
     public function actionFriendcalendars($id){
         $searchModel = new SearchCalendar();
-        $dataProvider = $searchModel->search([
-            'SearchCalendar' => [
-                'creator' => $id,
-                'access' => [
-                    'user_guest' => Yii::$app->user->id,
+        $dataProvider = $searchModel->search(
+            [
+                'SearchCalendar' => [
+                    'creator' => $id,
+                    'access' => [
+                        'user_owner' => Yii::$app->user->id,
+                    ]
                 ]
-            ]
-        ]);
+            ]);
         $e = Calendar::find()->select('*')
                         ->leftJoin('table_access', '`table_access`.`date` = `clndr_calendar`.`date_event`')
                         ->where(['user_guest'=>Yii::$app->user->id])
@@ -128,7 +129,7 @@ class CalendarController extends Controller
             $events[] = $event;
         }
 
-        return $this->render('index', [
+        return $this->render('friendCalendars', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'events' => $events
@@ -139,26 +140,28 @@ class CalendarController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id,$date="0000-00-00")
     {
         $model = $this->findModel($id);
-        $result = Access::checkAccess($model);
-        switch($result){
-            case Access::ACCESS_CREATOR:
-                return $this->render('viewCreator', [
-                    'model' => $model,
-                ]);
-                break;
-            case Access::ACCESS_GUEST:
-                return $this->render('viewGuest', [
-                    'model' => $model,
-                ]);
-                break;
-            default:
-                throw new ForbiddenHttpException("Access denied", 403);
-                break;
+        $result = Access::checkAccess($model, $date);
+        if($result) {
+            switch ($result) {
+                case Access::ACCESS_CREATOR:
+                    return $this->render('viewCreator', [
+                        'model' => $model,
+                    ]);
+                    break;
+                case Access::ACCESS_GUEST:
+                    return $this->render('viewGuest', [
+                        'model' => $model,
+                    ]);
+                    break;
+            }
         }
+                throw new ForbiddenHttpException("Access denied", 403);
+
     }
+
 
     /**
      * Creates a new Calendar model.

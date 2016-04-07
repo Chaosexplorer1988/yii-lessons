@@ -30,6 +30,21 @@ class AccessQuery extends \yii\db\ActiveQuery
     }
     /**
      * Condition with date
+     * @param $user_owner
+     * @return $this
+     */
+
+    public function withOwner($user_owner)
+ 	{
+ 		return $this->andWhere(
+ 			'user_owner = :user_owner',
+            [
+                ":user_owner" => $user_owner
+            ]
+ 		);
+ 	}
+    /**
+     * Condition with date
      * @param $date
      * @return $this
      */
@@ -38,7 +53,7 @@ class AccessQuery extends \yii\db\ActiveQuery
         return $this->andWhere(
             'date = :date',
             [
-                ":date" => substr($date,0,10)
+                ":date" => $date
             ]
         );
     }

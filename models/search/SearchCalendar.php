@@ -12,6 +12,7 @@ use app\models\Calendar;
  */
 class SearchCalendar extends Calendar
 {
+    public $access;
     /**
      * @inheritdoc
      */
@@ -23,6 +24,10 @@ class SearchCalendar extends Calendar
         ];
     }
 
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), ['access']);
+    }
     /**
      * @inheritdoc
      */
@@ -48,7 +53,8 @@ class SearchCalendar extends Calendar
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        $query->joinWith(['access']);
+        $query->joinWith('access');
+        $query->where("clndr_calendar.creator=".Yii::$app->user->id);
         $dataProvider->sort->attributes['access'] = [
             'asc' => ['table_access.user_owner' => SORT_ASC],
             'desc' => ['table_access.user_owner' => SORT_DESC],
@@ -63,14 +69,17 @@ class SearchCalendar extends Calendar
         $query->joinWith('userCreator');
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'date_event' => $this->date_event,
-           // 'table_access.user_owner' => $this->access['user_owner']
+            'clndr_calendar.id' => $this->id,
+            'clndr_calendar.date_event' => $this->date_event,
+            'table_access.user_guest' => $this->access['user_guest'],
+
         ]);
 
         $query->andFilterWhere(['like', 'text', $this->text])
-              ->andFilterWhere(['like', 'creator', $this->creator]);
+              ->andFilterWhere(['like', 'creator', $this->creator])
+              ->andFilterWhere(['like', 'table_access.date', $this->date_event]);
 
         return $dataProvider;
     }
+
 }

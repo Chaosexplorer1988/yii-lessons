@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= Html::a(Yii::t('app', 'My Accesses'), ['/access'], ['class' => 'btn btn-success']) ?>
     <?= Html::a(Yii::t('app', 'Calendars of my friend'), ['/calendar/friendcalendars?id='.Yii::$app->user->id], ['class' => 'btn btn-success']) ?>
-
+    <?= Html::a(Yii::t('app', 'Users opened the access'), ['/access/friendaccess'], ['class' => 'btn btn-success']) ?>
     <?php
         \yii\bootstrap\Modal::begin([
             'header' =>'<h4>Календарь</h4>',
@@ -38,10 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
             //'id',
-            [
-                'attribute' =>'creator',
-                'value' =>'userCreator.username'
-            ],
+            //[
+             //   'attribute' =>'creator',
+              //  'value' =>'userCreator.username'
+            //],
 
             'text',
             //'date_event',
