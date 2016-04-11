@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\web\JsExpression;
 
 
 /* @var $this yii\web\View */
@@ -13,7 +14,24 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'user_guest')->textInput() ?>
+
+    <?=
+    $form->field($model, 'user_guest')->widget(
+        \yii\jui\AutoComplete::className(),[
+    'clientOptions' => [
+        'source' => \app\models\User::find()
+            ->select(['id as value', 'username as label', 'id'])
+            ->where('id !='.Yii::$app->user->id)
+            ->asArray()
+            ->all(),
+        'select' => new JsExpression("function( event, ui ) { 
+                                $('#access-user_guest').val(ui.item.id);
+                             }"
+        )
+    ],
+        'options' =>[
+        'class'=>'form-control']
+    ]) ?>
 
     <?= $form->field($model, 'date')->textInput() ?>
 

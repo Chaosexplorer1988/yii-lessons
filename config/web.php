@@ -19,7 +19,7 @@ $config = [
                 '<controller:\w+>/<id:\d+>'              => '<controller>/view',
                 '<controller:\w+>/<id:\d+>/<date:\w+>'   => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
-                'calendar/view/<id:\d+>/<date:\w+>'      => 'calendar/view',
+                'calendar/view/<id:\d+>/<date:\d{4}\-\d{2}\-\d{2}>'      => 'calendar/view',
                 '<controller:\w+>/<action:\w+>'          => '<controller>/<action>',
             ],
         ],

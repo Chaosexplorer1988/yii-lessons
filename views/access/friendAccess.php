@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'dataProvider' => $dataProvider,
             'filterModel'  => $searchModel,
             'columns'      => [
-                'id',
+
                 [
                     'attribute' => 'user_owner',
                     'value'     => 'userOwner.username'
@@ -41,9 +41,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{view}',
                     'buttons'  => [
                         'view' => function ($url, $model) {
-                            if ($model->user_guest === Yii::$app->user->id) {
+                            if (!\Yii::$app->user->isGuest) {
+                                $e = \app\models\Calendar::find()->where(['creator' => $model->user_owner, 'date_event' => $model->date])->one();
                                 return Html::a(
-                                    '<span class="glyphicon glyphicon-eye-open"></span>', '/calendar/view?id='.$model->user_owner."&date=".$model->date
+                                    '<span class="glyphicon glyphicon-eye-open"></span>', '/calendar/view?id='.$e->id."&date=".$model->date
                                 );
                             }
                         },

@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
           //  ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
 				[
 					'attribute' => 'user_guest',
 					'value'     => 'userGuest.username'
@@ -33,8 +33,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'date',
                 'value'     => 'date',
                 'filter' => \yii\jui\DatePicker::widget([
-                   // 'model' => $searchModel,
-                  //  'attribute' => 'date_event',
+                    'model' => $searchModel,
+                    'attribute' => 'date',
                     'language' => 'ru',
                     'dateFormat' => 'yyyy-MM-dd'
                 ]),
